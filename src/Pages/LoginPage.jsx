@@ -1,10 +1,29 @@
-import { Button, Input } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import { loginSchema } from "../Schemas/FormValidation";
+import AuthContext from "../utils/AuthContext";
 
 function LoginPage() {
   const [showpassword, setShowpassword] = useState(false);
+
+  let { loginUser } = useContext(AuthContext);
+
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: loginSchema,
+      onSubmit: (values) => {
+        loginUser(values);
+      },
+    });
   return (
     <div>
       <div className="w-screen h-full  md:h-screen flex justify-center items-center bg-blue-100 ">
@@ -25,20 +44,36 @@ function LoginPage() {
                 To keep connected with us please login with your personal
                 information by email address and password
               </p>
-              <form className=" w-full h-60  mt-10   ">
-                <div className="mb-4">
+              <form className=" w-full h-60 mt-10" onSubmit={handleSubmit}>
+                <div className="mb-4 ">
                   <input
                     type="email"
+                    name="email"
+                    autoComplete="off"
                     className="w-full p-3 rounded-lg border border-black text-black "
                     placeholder="Enter Your Email Address"
+                    value={values.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {errors.email && touched.email ? (
+                    <p className=" text-red-400 text-sm "> {errors.email} </p>
+                  ) : null}
                 </div>
                 <div className="mb-4 relative">
                   <input
                     type={showpassword ? "text" : "password"}
+                    name="password"
+                    autoComplete="off"
                     className="w-full p-3 rounded-lg border border-black text-black "
                     placeholder="Enter Password"
+                    value={values.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {errors.password && touched.password ? (
+                    <p className=" text-red-400 text-sm"> {errors.password} </p>
+                  ) : null}
                   {showpassword ? (
                     <BsFillEyeFill
                       onClick={() => setShowpassword(!showpassword)}
@@ -56,10 +91,10 @@ function LoginPage() {
                   Login
                 </Button>
               </form>
-              <div className="flex mb-10">
-                <p className="mr-5 mt-2">Don't have an account ? </p>
-                <Link to='/signup'>
-                <Button>Sign Up </Button>
+              <div className="flex mb-6">
+                <p className="mr-5 mt-4">Don't have an account ? </p>
+                <Link to="/signup">
+                  <Button>Sign Up </Button>
                 </Link>
               </div>
             </div>
