@@ -51,10 +51,9 @@ function Header() {
       <div className="w-full">
         <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
           <div className="flex items-center justify-between text-blue-gray-900">
-            <Link to={"/"}>
+            <Link className=" flex" to={"/"}>
+              <img className=" w-10 h-10" src="/src/images/logo.png" alt="" />
               <Typography
-                as="a"
-                href="#"
                 className="mr-4 cursor-pointer py-1.5 font-black"
               >
                 BrainBlend
